@@ -8,8 +8,6 @@ class IndexHandler(tornado.web.RequestHandler):
         """GET请求方式"""
         self.write("hello world")
 
-    def post(self):
-        self.write('post methods')
 
 
 if __name__ == '__main__':
