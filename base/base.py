@@ -3,24 +3,45 @@ import tornado.web
 import tornado.ioloop
 import tornado.httpserver
 import tornado.options
+import json
+
 
 from tornado.options import define,options
 from tornado.web import RequestHandler,url
 
 
-tornado.options.define("port",type=int,default=8000,help="服务器监听端口")
+define("port",type=int,default=8000,help="服务器监听端口")
 
 
 class Indexhandler(RequestHandler):
     """主页处理类"""
     def  get(self):
-        self.write(" index page ")
-        # self.write("<a href= ' " + self.reverse_url("cpp_url") + " '>cpp</a>")
-        # subject = self.get_argument("subject")
-        # query_data = self.get_arguments("q")
-        # query_body = self.get_body_argument("q")
-        # query_body = self.get_body_arguments("q")
-        # self.write(query_data)
+        # self.write(chunk)
+        # self.write(" index page 1 ")
+        # self.write(" index page 2 ")
+        # self.write(" index page 3 ")
+        # 输出json数据
+        stu = {
+            "name":"zhangsan",
+            "age":25,
+            "gender":1
+        }
+        # self.write(json.dumps(stu))
+        # self.set_header("Content-Type", "application/json; charset=UTF-8")
+        # 不用自己手动去做json序列化，当write方法检测到传入的chunk参数是字典类型后，
+        # 会自动帮我们转换为json字符串。
+        self.write(stu)
+
+    def post(self):
+        files = self.request.files
+        img_files = files.get('img')
+        if img_files:
+            img_file = img_files[0]['body']
+            # print(img_file)
+            file = open('./itcast','w+')
+            file.write(img_file)
+            file.close()
+        self.write('OK')
 
 class SubjectHandler(RequestHandler):
     def initialize(self,subject):
@@ -43,3 +64,6 @@ if __name__ == '__main__':
     http_server = tornado.httpserver.HTTPServer(app)
     http_server.listen(options.port)
     tornado.ioloop.IOLoop.current().start()
+
+
+

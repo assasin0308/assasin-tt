@@ -4,15 +4,23 @@ import tornado.ioloop
 
 class IndexHandler(tornado.web.RequestHandler):
     """主页处理类"""
-    def  get(self):
+    def get(self):
         """GET请求方式"""
-        self.write("hello world")
+        self.write("this is index page")
+
+
+
+
 
 
 
 if __name__ == '__main__':
-    app = tornado.web.Application([(
-        r"/",IndexHandler
-    )])
-    app.listen(port=8000)
+    app = tornado.web.Application(
+    [
+        (r"/",IndexHandler),
+    ],
+    debug=True
+    )
+    app.listen(8000)
     tornado.ioloop.IOLoop.current().start()
+
